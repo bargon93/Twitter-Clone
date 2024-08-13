@@ -55,7 +55,31 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
     try {
-        
+        const {username, password} = req.body;
+        const user = await User.findOne({username: username});
+        if(!user) {
+            return res.status(400).json({error: `User ${username} is not registered`});
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(password, user.password);
+
+        if(!isPasswordCorrect) {
+            return res.status(400).json({error: "Wrong password"});
+        }
+
+        tokenSetUp(user._id, res);
+
+        res.status(200).json({
+            _id: user._id,
+            fullName: user.fullname,
+            username: user.username,
+            email: user.email,
+            followers: user.followers,
+            following: user.following,
+            profileImg: user.profileImg,
+            coverImg: user.coverImg,
+        });
+
     } catch (error) {
         res.status(500).json({error: error.message});
     }
