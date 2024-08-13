@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from "../models/user.model.js";
-import tokenSetUp from "../utils/tokenSetUp.js"
+import {tokenSetUp} from "../utils/tokenSetUp.js"
 
 export const signup = async (req, res) => {
     try {
@@ -14,6 +14,10 @@ export const signup = async (req, res) => {
         const existingEmail = await User.findOne({email : email});
         if(existingEmail) {
             return res.status(400).json({error: "Email is already taken"});
+        }
+
+        if(password.length < 6) {
+            return res.status(400).json({error: "Password must be at least 6 characters long"})
         }
 
         //hash password
@@ -45,14 +49,16 @@ export const signup = async (req, res) => {
         }
 
     } catch (error) {
-        res.staus(500).json({error: error.message});
+        res.status(500).json({error: error.message});
     }
 }
 
 export const login = async (req, res) => {
-    res.json({
-        data: "login"
-    });
+    try {
+        
+    } catch (error) {
+        res.status(500).json({error: error.message});
+    }
 }
 
 export const logout = async (req, res) => {

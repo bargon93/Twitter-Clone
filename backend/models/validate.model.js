@@ -1,6 +1,6 @@
 import { validationResult } from "express-validator";
 
-exports.Validate = (req, res, next) => {
+export const Validate = (req, res, next) => {
     const errors = validationResult(req);
 
     if(!errors.isEmpty()) {
