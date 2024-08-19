@@ -50,3 +50,27 @@ export const followOrUnfollowUser = async (req, res) => {
         res.status(500).json({error: "Internal server error"});
     }
 }
+
+export const getSuggestedUsers = async (req, res) => {
+    try {
+        const userID = req.user._id;
+        const usersFollowed = await User.findById(userID).select("following");
+        const users = await User.aggregate([
+            {
+                $match: {
+                    _id: {$ne:userID}
+                }           
+            },
+            {$sample: {size:10}}
+        ])
+
+        const filteredUsers = users.filter(user => !usersFollowed.following.includes(user._id));
+        const suggestedUsers = filteredUsers.slice(0, 4);
+
+        suggestedUsers.forEach(user=>user.password=null);
+        res.status(200).json(suggestedUsers);
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({error: "Internal server error"});
+    }
+}
