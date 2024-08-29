@@ -19,6 +19,7 @@ function App() {
 				const data = await res.json();
 				if(!res.ok) throw new Error(data.error || "Something went wrong");
 				console.log(data);
+				return data
 			} catch (error) {
 				throw new Error(error);
 			}
@@ -36,7 +37,7 @@ function App() {
 		<div className='flex max-w-6xl mx-auto'>
 			<SideBar />
 			<Routes>
-				<Route path='/' element={authUser ? <HomePage /> : <Navigate to="login"/> } />
+				<Route path='/' element={authUser ? <HomePage /> : <Navigate to="/login"/> } />
 				<Route path='/signup' element={!authUser ? <SignUpPage /> : <Navigate to="/"/>} />
 				<Route path='/login' element={!authUser ? <LoginPage /> : <Navigate to="/"/>} />
 				<Route path='/notifications' element={authUser ? <NotificationPage /> : <Navigate to="login"/>} />
