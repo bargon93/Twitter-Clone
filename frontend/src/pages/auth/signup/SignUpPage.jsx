@@ -30,20 +30,22 @@ const SignUpPage = () => {
           body: JSON.stringify({email, username, fullName, password})
         });
         
-        // if(!res.ok) throw new Error("Something went wrong");
         const data = await res.json();
-        if(data.error) throw new Error(data.error);
+        if(!res.ok) throw new Error(data.error || "Failed to create account");
         
         return data;
       } catch (error) {
         console.error(error);
-        toast.error(error.message);
+        throw error;
       }
+    },
+    onSuccess: () => {
+      toast.success("Account created successfully");
     }
   });
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    mutate(formData);
   }
 
   const handleInputChange = (e) => {
@@ -105,7 +107,7 @@ const SignUpPage = () => {
               value={formData.password}
             />
           </label>
-          <button className="btn rounded-full byn-primary text-white">
+          <button className="btn rounded-full btn-primary text-white">
             {isPending ? "Loading..." : "Sign up"}
           </button>
           {isError && <p className="text-red-500">{error.message}</p>}
