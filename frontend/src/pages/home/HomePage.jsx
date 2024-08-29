@@ -33,7 +33,7 @@ const HomePage = () => {
         {/*CREATE POST INPUT*/}
         <CreatePost/>
         {/*POSTS*/}
-        <Posts/>
+        <Posts feedType={feedType}/>
       </div>
     </>
   );
