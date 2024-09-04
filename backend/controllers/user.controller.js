@@ -82,7 +82,7 @@ export const updateUser = async (req, res) => {
     const {fullname, email, username, currentPassword, newPassword, bio, link} = req.body;
     let {profileImg, coverImg} = req.body;
     const userID = req.user._id;
-
+    
     try {
         let user = await User.findById(userID);
         if(!user) return res.status(404).json({message: "User not found"});
