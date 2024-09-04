@@ -90,16 +90,18 @@ const Post = ({ post }) => {
 				throw new Error(error);
 			}
 		},
-		onSuccess: (comments) => {
+		onSuccess: () => {
+			toast.success("Comment posted successfully")
 			setComment("");
-			queryClient.setQueryData(["posts"], (oldData) => {
-				return oldData.map((p) => {
-					if(p._id === post._id) {
-						return {...p, comments:comments}
-					}
-					return p;
-				})
-			})
+			// queryClient.setQueryData(["posts"], (oldData) => {
+			// 	return oldData.map((p) => {
+			// 		if(p._id === post._id) {
+			// 			return {...p, comments:comments}
+			// 		}
+			// 		return p;
+			// 	})
+			// })
+			queryClient.invalidateQueries({queryKey: ["posts"]});
 		},
 		onError: (error) => {
 			toast.error(error.message);
