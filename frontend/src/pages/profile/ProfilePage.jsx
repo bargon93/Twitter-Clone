@@ -45,7 +45,7 @@ const ProfilePage = () => {
             }
       });
 
-      const {updateProfile, isUpdatingProfile} = useUpdateProfile();
+      const {updateProfile, isUpdatingProfile} = useUpdateProfile({profileImg, coverImg});
 
       const memberSinceDate = formatMemberSinceDate(user?.createdAt);
       const isMyProfile = authUser._id === user?._id;
@@ -155,7 +155,7 @@ const ProfilePage = () => {
                                                       <button
                                                             className='btn btn-primary rounded-full btn-sm text-white px-4 ml-2'
                                                             onClick={async () => {
-                                                                  await updateProfile({profileImg, coverImg});
+                                                                  await updateProfile();
                                                                   setProfileImg(null);
                                                                   setCoverImg(null);
                                                             }}
